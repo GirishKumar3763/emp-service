@@ -7,15 +7,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name="employee")
-public class Employee {
+public class Employee { 
+	
 	@Id	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
-    private int employeeID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	 
+
+	private int employeeID;
 	
 	@Column(name = "first_name")
     private String firstName;

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.girish'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 
 java {
 	sourceCompatibility = '17'
@@ -38,6 +38,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.32'
 	testCompileOnly 'org.projectlombok:lombok:1.18.32'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+	implementation group: 'io.github.resilience4j', name: 'resilience4j-spring-boot3', version: '2.2.0'
 	
 }
 

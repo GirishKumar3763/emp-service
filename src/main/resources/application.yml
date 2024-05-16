@@ -61,7 +61,45 @@ management:
         allowed-origins: http://localhost:8001/empservice/
   metrics:
     use-global-registry: false
-    
+resilience4j:
+    ratelimiter:
+      instances:
+         getEmployeeRateLimit:
+           limit-for-period: 2
+           limit-refresh-period: 5s
+           timeout-duration: 0
+             
+    retry:
+       instances:
+         getRetryEmployeesList:
+           max-attempts: 5
+           wait-duration: 2s
+           retry-exceptions: org.springframework.web.client.ResourceAccessException
+           
+    circuitbreaker:
+      instances:
+         saveEmpCircuitBreaker:
+           failure-rate-threshold: 80
+           sliding-window-size: 10
+           sliding-window-type: COUNT_BASED
+           minimum-number-of-calls: 5
+           automatic-transition-from-open-to-half-open-enabled: true
+           permitted-number-of-calls-in-half-open-state: 4
+           wait-duration-in-open-state: 1s
+          
+    timelimiter:
+       instances:
+          updateEmpTimeLimitter:
+           timeout-duration: 1ms
+           cancel-running-future: false    
+        
+    bulkhead:
+        instances:
+          getMessageBulkHead:
+           max-concurrent-calls: 5
+           max-wait-duration: 0
+          
+           
 
 
 

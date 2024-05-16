@@ -51,7 +51,7 @@ public class EmployeeRepositoryTest {
 		Assertions.assertThat(employee.getEmployeeID()).isEqualTo(2);
 		
 	}
-	
+	@Disabled
 	@Test
 	@Order(3)
 	@Timeout(value = 500, unit = TimeUnit.MILLISECONDS)

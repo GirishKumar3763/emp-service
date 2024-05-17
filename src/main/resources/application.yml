@@ -11,7 +11,11 @@ spring:
             ddl-auto: update  
         show_sql: true
    profiles:
-        active: dev       
+        active: dev
+   config:
+        import: optional:configserver:http://localhost:8888 
+        name: empservice
+            
                      
 server:
   port: 8001
@@ -34,33 +38,7 @@ logging:
      max-file-size: 100MB
      total-size-cap: 10GB
      max-history: 10
-management:
-  endpoint:
-    shutdown:
-      enabled: false
-    info:
-      enabled: true
-    caches:
-      cache:
-        time-to-live: 10s
-    health:
-      show-details: always
-      show-components: always
-      group:
-        custom:
-         show-details: always
-         roles: admin         
-  endpoints:
-    enabled-by-default: true
-    jmx:
-      exposure:
-        include: health,info
-    web:
-      cors:
-        allowed-methods: GET,POST,PUT,DELETE
-        allowed-origins: http://localhost:8001/empservice/
-  metrics:
-    use-global-registry: false
+
 resilience4j:
     ratelimiter:
       instances:
@@ -98,9 +76,4 @@ resilience4j:
           getMessageBulkHead:
            max-concurrent-calls: 5
            max-wait-duration: 0
-          
-           
-
-
-
-
+       

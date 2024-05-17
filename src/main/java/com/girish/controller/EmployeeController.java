@@ -1,11 +1,12 @@
 package com.girish.controller;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.girish.config.EmployeeConfig;
 import com.girish.exception.EmployeeNotFoundException;
 import com.girish.model.Employee;
-import com.girish.repository.EmployeeRepository;
 import com.girish.service.EmployeeService;
 
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
@@ -36,9 +36,12 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 public class EmployeeController {	
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 	
-	
 	@Autowired
 	EmployeeService empService;
+	
+	@Value("${empservice.message:Config Server is not working. Please check...}")
+	private String message;
+	
 	
 	@GetMapping("/employeebyid/{id}")
 	@RateLimiter(name = "getEmployeeRateLimit" ,fallbackMethod ="getRateLimitFallBack" )
@@ -120,7 +123,12 @@ public class EmployeeController {
 
        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
       .body("Too many requests : No further request will be accepted. Plese try after sometime");
-    }
+    }  
+  
 	
+	 @GetMapping("/msg") 
+	 public ResponseEntity<String> getMessage() {
+	   return new ResponseEntity<String>("Value of title from Config Server:-- "+this.message, HttpStatus.OK); 
+	 }
 	
 }

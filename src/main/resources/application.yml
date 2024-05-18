@@ -28,7 +28,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: false
   instance:
-      preferIpAddress: true  
+      preferIpAddress: true       
+        
 logging:
    file:
     name: logs/app.log      
@@ -45,15 +46,13 @@ resilience4j:
          getEmployeeRateLimit:
            limit-for-period: 2
            limit-refresh-period: 5s
-           timeout-duration: 0
-             
+           timeout-duration: 0             
     retry:
        instances:
          getRetryEmployeesList:
            max-attempts: 5
            wait-duration: 2s
-           retry-exceptions: org.springframework.web.client.ResourceAccessException
-           
+           retry-exceptions: org.springframework.web.client.ResourceAccessException           
     circuitbreaker:
       instances:
          saveEmpCircuitBreaker:
@@ -63,17 +62,43 @@ resilience4j:
            minimum-number-of-calls: 5
            automatic-transition-from-open-to-half-open-enabled: true
            permitted-number-of-calls-in-half-open-state: 4
-           wait-duration-in-open-state: 1s
-          
-    timelimiter:
-       instances:
-          updateEmpTimeLimitter:
-           timeout-duration: 1ms
-           cancel-running-future: false    
-        
+           wait-duration-in-open-state: 1s          
+#    timelimiter:
+#       instances:
+#          updateEmpTimeLimitter:
+#           timeout-duration: 1ms
+#           cancel-running-future: false         
     bulkhead:
         instances:
           getMessageBulkHead:
            max-concurrent-calls: 5
            max-wait-duration: 0
+management:
+  endpoint:
+    shutdown:
+      enabled: false
+    info:
+      enabled: true
+    caches:
+      cache:
+        time-to-live: 10s
+    health:
+      show-details: always
+      show-components: always
+      group:
+        custom:
+         show-details: always
+         roles: admin         
+  endpoints:
+    enabled-by-default: true
+    jmx:
+      exposure:
+        include: health,info
+    web:
+      cors:
+        allowed-methods: GET,POST,PUT,DELETE
+        allowed-origins: http://localhost:8001/empservice/
+      
+  metrics:
+    use-global-registry: false           
        

@@ -97,18 +97,20 @@ public class EmployeeController {
 	}
 
 	@PutMapping("/updateemployee")
-	@TimeLimiter(name = "updateEmpTimeLimitter", fallbackMethod = "updateEmpFallback")
+	//@TimeLimiter(name = "updateEmpTimeLimitter", fallbackMethod = "updateEmpFallback")
 	public ResponseEntity<Employee>  updateEmployee(@RequestBody Employee employee) {	
 		logger.info("EmployeeController - updateEmployee-id:"+employee.getEmployeeID());	
 		empService.getByEmployeeId(employee.getEmployeeID()).orElseThrow(() -> new EmployeeNotFoundException("Employee-"+employee.getEmployeeID()+" not found with the given ID."));	
 		return new ResponseEntity<>(empService.addEmployee(employee), HttpStatus.OK);	
 	}
 	
-	public ResponseEntity<String> updateEmpFallback(Exception e) {
-		logger.info("--RESPONSE FROM FALLBACK METHOD---");
-		
-		return new ResponseEntity<String>("SERVER IS DOWN, PLEASE TRT AFTER SOME TIME", null);
-	}
+	/*
+	 * public ResponseEntity<String> updateEmpFallback(Exception e) {
+	 * logger.info("--RESPONSE FROM FALLBACK METHOD---");
+	 * 
+	 * return new
+	 * ResponseEntity<String>("SERVER IS DOWN, PLEASE TRT AFTER SOME TIME", null); }
+	 */
 	
 	@GetMapping("/getMessage")
     @Bulkhead(name = "getMessageBulkHead", fallbackMethod = "getMessageFallBack")

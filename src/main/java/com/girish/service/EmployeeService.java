@@ -3,6 +3,9 @@ package com.girish.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
+
+import com.girish.dto.AddressRecord;
 import com.girish.model.Employee;
 
 public interface EmployeeService {
@@ -13,6 +16,10 @@ public interface EmployeeService {
 	public void deleteEmployee(Integer employeeId);
 	public Employee addEmployee(Employee employee);
 	public Employee updateEmployee(Employee employee);
-	//public List<Employee> findByLastNameOrderByAgeDesc(String lastName);
+	public AddressRecord getEmployeeAddress(Integer id);
+	public List<AddressRecord> getAllEmployeeAddress();
+	public AddressRecord addEmployeeAddress(AddressRecord address);
+	public void updateEmployeeAddress(AddressRecord address);
+	public void deleteEmployeeAddress(Integer addressId);
 
 }

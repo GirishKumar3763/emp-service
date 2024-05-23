@@ -4,9 +4,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.girish.config.EmployeeConfig;
 import com.girish.dto.AddressRecord;
 import com.girish.exception.EmployeeNotFoundException;
 import com.girish.model.Employee;
@@ -30,7 +26,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @CrossOrigin
 @RestController
@@ -42,7 +37,7 @@ public class EmployeeController {
 	
 	@GetMapping("/employeebyid/{id}")
 	public ResponseEntity<Employee> getByEmployeeId(@PathVariable("id") int id) {
-		logger.info("EmployeeController - getByEmployeeId-id:"+id);	
+		logger.info("EmployeeFeignController - getByEmployeeId-id:"+id);	
 		Employee emp = empService.getByEmployeeId(id).orElseThrow(() -> new EmployeeNotFoundException("Employee-"+id+" not found with the given ID."));
 		return new ResponseEntity<>(emp, HttpStatus.OK);
 	}	
@@ -56,7 +51,7 @@ public class EmployeeController {
 	}
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable("id") Integer id) {
-		logger.info("EmployeeController - deleteEmployee-id:"+id);	
+		logger.info("EmployeeFeignController - deleteEmployee-id:"+id);	
 		Employee emp = empService.getByEmployeeId(id).orElseThrow(() -> new EmployeeNotFoundException("Employee-"+id+" not found with the given ID."));	
 		empService.deleteEmployee(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);		
@@ -70,7 +65,7 @@ public class EmployeeController {
 
 	@PutMapping("/updateemployee")	
 	public ResponseEntity<Employee>  updateEmployee(@RequestBody Employee employee) {	
-		logger.info("EmployeeController - updateEmployee-id:"+employee.getEmployeeID());	
+		logger.info("EmployeeFeignController - updateEmployee-id:"+employee.getEmployeeID());	
 		empService.getByEmployeeId(employee.getEmployeeID()).orElseThrow(() -> new EmployeeNotFoundException("Employee-"+employee.getEmployeeID()+" not found with the given ID."));	
 		return new ResponseEntity<>(empService.addEmployee(employee), HttpStatus.OK);	
 	}
@@ -88,7 +83,7 @@ public class EmployeeController {
     @GetMapping("/getByEmployeeByAddress/{id}")
 	@RateLimiter(name = "getEmployeeRateLimit" ,fallbackMethod ="getRateLimitFallBack" )
 	public ResponseEntity<AddressRecord> getByEmployeeByAddress(@PathVariable("id") int id) {
-		logger.info("EmployeeController - getByEmployeeByAddress-id:"+id);	
+		logger.info("EmployeeFeignController - getByEmployeeByAddress-id:"+id);	
 		AddressRecord emp = empService.getEmployeeAddress(id);		
 		return new ResponseEntity<>(emp, HttpStatus.OK);
 	}	
@@ -128,7 +123,7 @@ public class EmployeeController {
 	@PutMapping("/updateemployeeaddress")
 	//@TimeLimiter(name = "updateEmpTimeLimitter", fallbackMethod = "updateEmpFallback")
 	public ResponseEntity<AddressRecord>  updateEmployeeAddress(@RequestBody AddressRecord employee) {	
-		logger.info("EmployeeController - updateEmployee-id:"+employee.addressID());		
+		logger.info("EmployeeFeignController - updateEmployee-id:"+employee.addressID());		
 		empService.updateEmployeeAddress(employee);
 		return new ResponseEntity<>(employee, HttpStatus.ACCEPTED);
 	}
@@ -142,7 +137,7 @@ public class EmployeeController {
 	 */
 	@DeleteMapping("/deleteaddress/{id}")
 	public ResponseEntity<HttpStatus> deleteEmployeeAddress(@PathVariable("id") Integer id) {
-		logger.info("EmployeeController - deleteEmployeeAddress-id:"+id);
+		logger.info("EmployeeFeignController - deleteEmployeeAddress-id:"+id);
 		empService.deleteEmployeeAddress(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		

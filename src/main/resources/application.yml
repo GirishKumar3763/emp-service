@@ -14,13 +14,13 @@ spring:
         active: dev
    config:
         import: optional:configserver:http://localhost:8888 
-        name: empservice
+        name: emp-service
             
                      
 server:
   port: 8001
   servlet:
-    context-path: /empservice
+    context-path: /emp-service
 eureka:
   client:
    serviceUrl:
@@ -97,7 +97,7 @@ management:
     web:
       cors:
         allowed-methods: GET,POST,PUT,DELETE
-        allowed-origins: http://localhost:8001/empservice/
+        allowed-origins: http://localhost:8001/emp-service/
       
   metrics:
     use-global-registry: false           

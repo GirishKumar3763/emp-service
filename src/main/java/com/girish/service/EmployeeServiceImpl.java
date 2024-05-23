@@ -74,31 +74,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	public AddressRecord getEmployeeAddress(Integer id){		
-		AddressRecord address = restTemplate.getForObject("http://localhost:8003/addressservice/addressbyid/{id}", AddressRecord.class, id);
+		AddressRecord address = restTemplate.getForObject("http://localhost:8003/address-service/addressbyid/{id}", AddressRecord.class, id);
         return address;
 	}
 	
 	public List<AddressRecord> getAllEmployeeAddress() {		
-		ResponseEntity<AddressRecord[]> addressList = restTemplate.getForEntity("http://localhost:8003/addressservice/getalladdress", AddressRecord[].class);
+		ResponseEntity<AddressRecord[]> addressList = restTemplate.getForEntity("http://localhost:8003/address-service/getalladdress", AddressRecord[].class);
 		return Arrays.asList(addressList.getBody());				
     }
 
 
 	@Override
 	public AddressRecord addEmployeeAddress(AddressRecord address) {		
-		AddressRecord result = restTemplate.postForObject("http://localhost:8003/addressservice/insertaddress", address, AddressRecord.class);	
+		AddressRecord result = restTemplate.postForObject("http://localhost:8003/address-service/insertaddress", address, AddressRecord.class);	
 		return result;
 	}
 	
 	@Override
 	public void updateEmployeeAddress(AddressRecord address) {				
-		restTemplate.put("http://localhost:8003/addressservice/updateaddress", address, AddressRecord.class);
+		restTemplate.put("http://localhost:8003/address-service/updateaddress", address, AddressRecord.class);
 		
 	}
 
 	@Override
 	public void deleteEmployeeAddress(Integer id) {
-		restTemplate.delete("http://localhost:8003/addressservice/delete/{id}", id);
+		restTemplate.delete("http://localhost:8003/address-service/delete/{id}", id);
 	}
 	
 	

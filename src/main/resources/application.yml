@@ -15,6 +15,9 @@ spring:
    config:
         import: optional:configserver:http://localhost:8888 
         name: emp-service
+   mvc:
+        problemdetails:
+                     enabled: true     
             
                      
 server:

@@ -101,6 +101,9 @@ management:
       cors:
         allowed-methods: GET,POST,PUT,DELETE
         allowed-origins: http://localhost:8001/emp-service/
+      exposure:
+        include: '*' 
+             
       
   metrics:
     use-global-registry: false           

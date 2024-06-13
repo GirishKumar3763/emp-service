@@ -80,68 +80,6 @@ public class EmployeeController {
        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
       .body("Too many requests : No further request will be accepted. Plese try after sometime");
     }      
-    @GetMapping("/getByEmployeeByAddress/{id}")
-	@RateLimiter(name = "getEmployeeRateLimit" ,fallbackMethod ="getRateLimitFallBack" )
-	public ResponseEntity<AddressRecord> getByEmployeeByAddress(@PathVariable("id") int id) {
-		logger.info("EmployeeFeignController - getByEmployeeByAddress-id:"+id);	
-		AddressRecord emp = empService.getEmployeeAddress(id);		
-		return new ResponseEntity<>(emp, HttpStatus.OK);
-	}	
-	public ResponseEntity<String> getRateLimitFallBack(RequestNotPermitted exception) {
-        logger.info("Rate limit has applied, So no further calls are getting accepted");
-        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-        .body("Too many requests : No further request will be accepted. Please try after sometime");
-    }
-	
-	@GetMapping("/getallemployeesaddress")
-	@Retry(name = "getRetryEmployeesList",fallbackMethod = "getRetryEmployeesFallBack")
-	public ResponseEntity<List<AddressRecord>> getAllEmployeesAddress() {
-		List<AddressRecord> emps =  empService.getAllEmployeeAddress();
-		return new ResponseEntity<>(emps, HttpStatus.OK);
-		
-	}
-	
-	public ResponseEntity<String> getRetryEmployeesFallBack(Exception e) {
-		logger.info("--RESPONSE FROM FALLBACK METHOD---");
-		
-		return new ResponseEntity<String>("SERVER IS DOWN, PLEASE TRT AFTER SOME TIME", null);
-	}
-	
-	@PostMapping("/insertemployeeaddress")
-	@CircuitBreaker(name = "saveEmpCircuitBreaker",fallbackMethod = "saveEmpFallback")
-	public ResponseEntity<AddressRecord> insertEmployeeAddress(@RequestBody AddressRecord employee) {
-		AddressRecord emp=empService.addEmployeeAddress(employee);
-		return new ResponseEntity<>(emp, HttpStatus.CREATED);
-		
-	}
-	public ResponseEntity<String> saveEmpFallback(Exception e) {
-		logger.info("--RESPONSE FROM FALLBACK METHOD---");
-		
-		return new ResponseEntity<String>("SERVER IS DOWN, PLEASE TRT AFTER SOME TIME", null);
-	}
-	
-	@PutMapping("/updateemployeeaddress")
-	//@TimeLimiter(name = "updateEmpTimeLimitter", fallbackMethod = "updateEmpFallback")
-	public ResponseEntity<AddressRecord>  updateEmployeeAddress(@RequestBody AddressRecord employee) {	
-		logger.info("EmployeeFeignController - updateEmployee-id:"+employee.addressID());		
-		empService.updateEmployeeAddress(employee);
-		return new ResponseEntity<>(employee, HttpStatus.ACCEPTED);
-	}
-	
-	/*
-	 * public ResponseEntity<String> updateEmpFallback(Exception e) {
-	 * logger.info("--RESPONSE FROM FALLBACK METHOD---");
-	 * 
-	 * return new
-	 * ResponseEntity<String>("SERVER IS DOWN, PLEASE TRT AFTER SOME TIME", null); }
-	 */
-	@DeleteMapping("/deleteaddress/{id}")
-	public ResponseEntity<HttpStatus> deleteEmployeeAddress(@PathVariable("id") Integer id) {
-		logger.info("EmployeeFeignController - deleteEmployeeAddress-id:"+id);
-		empService.deleteEmployeeAddress(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-	}
 
 	
 }

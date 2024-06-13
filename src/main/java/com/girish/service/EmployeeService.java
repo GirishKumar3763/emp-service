@@ -16,10 +16,6 @@ public interface EmployeeService {
 	public void deleteEmployee(Integer employeeId);
 	public Employee addEmployee(Employee employee);
 	public Employee updateEmployee(Employee employee);
-	public AddressRecord getEmployeeAddress(Integer id);
-	public List<AddressRecord> getAllEmployeeAddress();
-	public AddressRecord addEmployeeAddress(AddressRecord address);
-	public void updateEmployeeAddress(AddressRecord address);
-	public void deleteEmployeeAddress(Integer addressId);
+	
 
 }
